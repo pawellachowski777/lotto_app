@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import streamlit as st
+
 
 def download_lotto():
     url = 'https://megalotto.pl/wyniki/multi-multi/'
@@ -29,11 +31,13 @@ def download_lotto():
             for number in number_line:
                 list_result.append(number.text.strip())
 
-        numbers = [n for n in list_result]
+        numbers = [int(n) for n in list_result]
         df_day['wylosowana_liczba'] = numbers
         df_day['data'] = pd.to_datetime(date, dayfirst=True).date()
+
         # df_day['data'] = date
 
         df = pd.concat([df, df_day])
 
     return df
+
